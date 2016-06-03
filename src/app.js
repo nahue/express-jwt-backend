@@ -16,7 +16,7 @@ const app = express();
 
 // MIDDLEWARE
 app.use(express.static('public'));
-app.use(passport.initialize()); // Init passport
+//app.use(passport.initialize()); // Init passport
 passportConfig(passport); // Configure Passport
 
 // CORS MIDDLEWARE

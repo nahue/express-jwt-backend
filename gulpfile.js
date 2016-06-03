@@ -10,12 +10,12 @@ var jsFiles = ['./src/app.js','./src/**/*.js'];
 
 gulp.task('compile', ['style'], function () {
     var stream = gulp.src(jsFiles) // your ES2015 code
-                   //.pipe(cache.filter()) // remember files
-                   .pipe(babel({
-                        presets: ['es2015']
-                    })) // compile new ones
-                   //.pipe(cache.cache()) // cache them
-                   .pipe(gulp.dest('./dist')); // write them
+       //.pipe(cache.filter()) // remember files
+       .pipe(babel({
+            presets: ['es2015']
+        })) // compile new ones
+       //.pipe(cache.cache()) // cache them
+       .pipe(gulp.dest('./dist')); // write them
     return stream // important for gulp-nodemon to wait for completion
 })
 
@@ -29,22 +29,6 @@ gulp.task('style', () => {
         .pipe(jscs.reporter());
 });
 
-gulp.task('serve', ['style'], () => {
-    var options = {
-        script: 'app.js',
-        delayTime: 1,
-        env: {
-            'PORT': 3000
-        },
-        watch: jsFiles
-    };
-
-    return nodemon(options)
-        .on('restart', () => {
-            console.log('Restarting...');
-        });
-});
-
 gulp.task('watch', ['compile'], function () {
     var stream = nodemon({
                     env: {
@@ -56,5 +40,5 @@ gulp.task('watch', ['compile'], function () {
                     tasks: ['compile'] // compile synchronously onChange
                 })
 
-    return stream
+    return stream;
 })

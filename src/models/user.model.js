@@ -1,16 +1,26 @@
-import thinky from '../config/db.js';
+module.exports = (r, models) => {
 
-const type = thinky.type;
-const r = thinky.r;
+    const {User} = models;
 
-var User = thinky.createModel('User', {
-    id: type.string(),
-    name: type.string(),
-    email: type.string(),
-    password: type.string(),
-    createdAt: type.date().default(new Date())
-});
+    return {
 
-User.ensureIndex('createdAt');
+        find: function(id) {
+            const user = User.get(id);
+            return user;
+        },
 
-export default User;
+        getByEmail: function(email) {
+            const user = User.filter({email}).limit(1).run();
+            return user;
+        },
+
+        create: function(params) {
+
+            const {email} = params;
+
+            const newUser = new User({email});
+            return newUser.save();
+        },
+
+    }
+}

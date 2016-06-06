@@ -1,14 +1,47 @@
-import thinky from '../config/db.js';
-let type = thinky.type;
+// More info @ https://github.com/siawyoung/thinky-express-example/blob/master/models/User.js
 
-var Photo = thinky.createModel('Photo', {
-    id: type.string(),
-    title: type.string(),
-    likes: type.number(),
-    url: type.string(),
-    createdAt: type.date().default(new Date())
-});
+module.exports = (r, models) => {
 
-Photo.ensureIndex('createdAt');
+    const {Photo, User, Message} = models;
 
-module.exports = Photo;
+    return {
+
+        getPhotos: async function() {
+            const photos = await Photo.getJoin({
+                messages: {
+                    _apply: function(seq) { return seq.count() },
+                    _array: false
+                },
+            }).run();
+            return photos;
+        },
+
+        getPhotoById: async function(id) {
+            return Photo.get(id).getJoin({
+                messages: {
+                    _apply: function(seq) { return seq.count() },
+                    _array: false
+                },
+            }).run();
+        },
+        getUserPosts: async function(userId) {
+            const user  = await User.get(userId)
+            const posts = user.getJoin({posts: true})
+            return posts
+        },
+
+        create: async function(userId, params) {
+
+            const {content} = params
+
+            const user     = await User.get(userId)
+            const category = await Category.get(params['category'])
+            const post     = new Post({content})
+            post.user     = user
+            post.category = category
+            return post.saveAll()
+
+        }
+
+    }
+}

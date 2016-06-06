@@ -1,7 +1,7 @@
 var JwtStrategy = require('passport-jwt').Strategy,
     ExtractJwt = require('passport-jwt').ExtractJwt;
 
-import config from './main';
+import config from '../config.js';
 
 export default function(passport) {
     var opts = {};

@@ -19,8 +19,6 @@
     "express-jwt": "^3.4.0",
     "express-list-routes": "^0.1.4",
     "morgan": "^1.7.0",
-    "passport": "^0.3.2",
-    "passport-jwt": "^2.0.0",
     "thinky": "^2.3.2"
   },
   "devDependencies": {

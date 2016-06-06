@@ -12,15 +12,13 @@ import passport from 'passport';
 import jwt from 'jsonwebtoken';
 import cors from 'cors';
 
-import passportConfig from './config/passport';
 // APP
 const port = process.env.PORT || 5000;
 const app = express();
 
 // MIDDLEWARE
 app.use(express.static('public'));
-//app.use(passport.initialize()); // Init passport
-passportConfig(passport); // Configure Passport
+
 // CORS MIDDLEWARE
 app.use(cors());
 app.use(expressJwt({secret: process.env.JWT_SECRET}).unless({

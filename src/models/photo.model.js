@@ -8,10 +8,11 @@ module.exports = (r, models) => {
 
         getPhotos: async function() {
             const photos = await Photo.getJoin({
+                messages: true/*,
                 messages: {
                     _apply: function(seq) { return seq.count() },
                     _array: false
-                },
+                },*/
             }).run();
             return photos;
         },

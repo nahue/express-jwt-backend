@@ -22,18 +22,18 @@ module.exports = config => {
     const Message = thinky.createModel('Message', {
         id: type.string(),
         text: type.string(),
-        user: type.string(),
+        userId: type.string(),
         photoId: type.string(),
         createdAt: type.date().default(new Date())
     });
 
     Message.ensureIndex('createdAt');
     Message.belongsTo(Photo, 'photo', 'photoId', 'id');
+    Message.belongsTo(User, 'user', 'userId', 'id');
     Photo.ensureIndex('createdAt');
     Photo.hasMany(Message, 'messages', 'id', 'photoId');
 
-
-    const allModels = { Photo, User, Message }
+    const allModels = {Photo, User, Message}
 
     return {
         Photo: require('./models/photo.model')(r, allModels),

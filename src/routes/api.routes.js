@@ -28,9 +28,11 @@ const router = (models) => {
 
         apiRouter.route('/photo/:id/message')
             .post((req, res) => {
+                console.log(req.body);
                 Message.create({
                     photoId: req.params.id,
-                    text: req.body.text
+                    text: req.body.text,
+                    userId: req.user._id
                 }).then((result) => {
                     res.json(result);
                 })

@@ -48,7 +48,6 @@ app.use('/api', apiRoutes);
 
 // expressListRoutes({ prefix: '/api' }, 'API:', apiRoutes );
 
-
 app.listen(port, (err) => {
     console.log('running server on port ' + port);
 });

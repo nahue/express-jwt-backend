@@ -23,13 +23,15 @@ app.use(express.static('public'));
 // CORS MIDDLEWARE
 app.use(cors());
 
-/*app.use(expressJwt({secret: process.env.JWT_SECRET}).unless({
-    path: [
-        '/api/auth/authenticate',
-        '/api/auth/register',
-        '/graphiql'
-    ]
-}));*/
+if (process.env.NODE_ENV == 'production') {
+    app.use(expressJwt({secret: process.env.JWT_SECRET}).unless({
+        path: [
+            '/api/auth/authenticate',
+            '/api/auth/register',
+            '/graphiql'
+        ]
+    }));
+}
 
 const config  = require('./config');
 const models = require('./schema')(config);

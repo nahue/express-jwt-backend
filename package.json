@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "gulp watch",
+    "prod": "NODE_ENV=production npm start",
     "test": "echo \"Error: no test specified\" && exit 1",
     "debug": "iron-node node_modules/gulp/bin/gulp.js serve"
   },

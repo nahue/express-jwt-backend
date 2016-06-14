@@ -34,7 +34,6 @@ module.exports = models => {
                 type: UserType,
                 resolve: (message) => {
                     const user = User.get(message.userId);
-                    console.log(user);
                     return user;
                 }
             }

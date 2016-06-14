@@ -9,15 +9,21 @@ module.exports = (r, models) => {
         },
 
         getPhotoMessages: function(id) {
-            return Photo.getJoin({messages:true}).filter({id}).limit(1).run().then((photos) => {
+            return Photo.getJoin({
+                messages: r.desc('createdAt')
+            }).filter({id}).limit(1).run().then((photos) => {
                 const photo = photos[0];
                 return photo.messages;
             });
         },
 
+        getMessagesByPhotoId: function(id) {
+            return Message.filter({photoId: id});
+        },
+
         create: function(params) {
-            const newMessage = new Message(params)
-            return newMessage.save()
+            const newMessage = new Message(params);
+            return newMessage.save();
         }
     }
 }

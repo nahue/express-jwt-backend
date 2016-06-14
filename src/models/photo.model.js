@@ -6,14 +6,23 @@ module.exports = (r, models) => {
 
     return {
 
-        getPhotos: async function() {
-            const photos = await Photo.getJoin({
-                messages: true/*,
+        getPhoto: function(id) {
+            return Photo.get(id);
+        },
+
+        getAll: function() {
+            return Photo.run();
+        },
+
+        getPhotos: function() {
+            const photos = Photo.getJoin({
                 messages: {
-                    _apply: function(seq) { return seq.count() },
-                    _array: false
-                },*/
-            }).run();
+                    _apply: function(seq) {
+                        return seq.orderBy(r.asc('createdAt'));
+                    },
+                    user: true
+                }
+            });
             return photos;
         },
 

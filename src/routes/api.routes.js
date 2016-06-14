@@ -1,16 +1,29 @@
 import express from 'express';
 import expressJwt from 'express-jwt';
 import Photo from '../models/photo.model';
-
 const apiRouter = express.Router();
 
 const router = (models) => {
-        const {Photo, Message} = models;
+        const {User, Photo, Message} = models;
 
         apiRouter.route('/photos')
             .get((req, res) => {
                 Photo.getPhotos().then(
-                    (photos) => res.json(photos)
+                    (photos) => {
+                        const result = photos.map((photo) => {
+                            return {
+                                ...photo,
+                                messages: photo.messages.map((message) => {
+                                    return {
+                                        ...message,
+                                        user: undefined,
+                                        userName: message.user.email
+                                    }
+                                })
+                            }
+                        });
+                        res.json(result);
+                    }
                 );
             });
 
@@ -34,8 +47,13 @@ const router = (models) => {
                     text: req.body.text,
                     userId: req.user._id
                 }).then((result) => {
-                    res.json(result);
-                })
+                    User.get(result.userId).then((user) => {
+                        res.json({
+                            ...result,
+                            userName: user.email
+                        });
+                    });
+                });
             });
 
         apiRouter.route('/photo/:id/messages')

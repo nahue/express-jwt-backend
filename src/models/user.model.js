@@ -4,6 +4,10 @@ module.exports = (r, models) => {
 
     return {
 
+        get: function(id) {
+            return User.get(id);
+        },
+
         find: function(id) {
             const user = User.get(id);
             return user;
@@ -16,9 +20,9 @@ module.exports = (r, models) => {
 
         create: function(params) {
 
-            const {email} = params;
+            const {email, password} = params;
 
-            const newUser = new User({email});
+            const newUser = new User({email,password});
             return newUser.save();
         },
 

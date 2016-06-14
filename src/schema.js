@@ -16,6 +16,7 @@ module.exports = config => {
         title: type.string(),
         likes: type.number(),
         url: type.string(),
+        userId: type.string(),
         createdAt: type.date().default(new Date())
     });
 
@@ -28,10 +29,13 @@ module.exports = config => {
     });
 
     Message.ensureIndex('createdAt');
+
     Message.belongsTo(Photo, 'photo', 'photoId', 'id');
     Message.belongsTo(User, 'user', 'userId', 'id');
+
     Photo.ensureIndex('createdAt');
     Photo.hasMany(Message, 'messages', 'id', 'photoId');
+    Photo.belongsTo(User, 'user', 'userId', 'id');
 
     const allModels = {Photo, User, Message}
 

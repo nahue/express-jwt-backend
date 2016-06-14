@@ -12,6 +12,7 @@ import passport from 'passport';
 import jwt from 'jsonwebtoken';
 import cors from 'cors';
 
+import graphQLHTTP from 'express-graphql';
 // APP
 const port = process.env.PORT || 5000;
 const app = express();
@@ -21,11 +22,23 @@ app.use(express.static('public'));
 
 // CORS MIDDLEWARE
 app.use(cors());
-app.use(expressJwt({secret: process.env.JWT_SECRET}).unless({
+
+/*app.use(expressJwt({secret: process.env.JWT_SECRET}).unless({
     path: [
         '/api/auth/authenticate',
-        '/api/auth/register'
+        '/api/auth/register',
+        '/graphiql'
     ]
+}));*/
+
+const config  = require('./config');
+const models = require('./schema')(config);
+
+// GRAPHQL
+const graphSchema = require('./graphSchema')(models);
+app.use('/gql', graphQLHTTP({
+    schema: graphSchema,
+    graphiql: true,
 }));
 
 // Parse requests
@@ -36,9 +49,6 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(morgan('dev'));
 // Enable Cors for dev
 app.options('*', cors());
-
-const config  = require('./config');
-const models = require('./schema')(config);
 
 const apiRoutes = apiRouter(models);
 // ROUTES
